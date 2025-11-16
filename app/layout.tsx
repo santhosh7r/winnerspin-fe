@@ -7,8 +7,7 @@ import { ReduxProvider } from "@/components/redux-provider"
 
 export const metadata: Metadata = {
   title: "Winnerspin",
-  description: "MLM Promoter Management System",
-  generator: "v0.app",
+  description: "Winnerspin is a platform to turn your savings into Amazing Gifts",
 }
 
 export default function RootLayout({
