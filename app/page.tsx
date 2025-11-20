@@ -9,6 +9,7 @@ import { FashionBrand } from "@/components/landing/fashion-brand";
 import { Footer } from "@/components/landing/footer";
 import MyJourneyPage from "@/components/landing/timeline";
 import NavBar from "@/components/landing/navbar";
+import { OurAppliances } from "@/components/landing/OurAppliances";
 import { AboutUs } from "@/components/landing/aboutUs";
 
 export default function Home() {
@@ -20,7 +21,7 @@ export default function Home() {
       {/* <HowItWorks /> */}
       <MyJourneyPage />
       <WhyChoose />
-
+      <OurAppliances />
       <Testimonials />
       <Founder />
       <CTA />
