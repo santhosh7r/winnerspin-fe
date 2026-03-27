@@ -1,13 +1,14 @@
 "use client"
 import { useSelector } from "react-redux"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Users, CreditCard, Wallet } from "lucide-react"
+import { Users, CreditCard, Wallet, Network, UserPlus } from "lucide-react"
 import type { RootState } from "@/lib/store"
 
 export function StatsCards() {
   const { user } = useSelector((state: RootState) => state.auth)
   const { repayments } = useSelector((state: RootState) => state.repayment)
   const { currentSeason } = useSelector((state: RootState) => state.season)
+  const { data: networkData } = useSelector((state: RootState) => state.network)
   const isApproved = user?.status === "approved"
 
   // Correctly calculate total repayments from the nested structure
@@ -26,6 +27,24 @@ export function StatsCards() {
       value: totalRepayments,
       icon: CreditCard,
       description: currentSeason ? `In ${currentSeason.season}` : "All seasons",
+    },
+    {
+      title: "My Network Promoters",
+      value: networkData?.counts?.totalNetworkPromoters || 0,
+      icon: Network,
+      description: "Promoters in your network",
+    },
+    {
+      title: "Network Customers",
+      value: networkData?.counts?.totalNetworkCustomers || 0,
+      icon: Users,
+      description: "Customers in your network",
+    },
+    {
+      title: "Self-Made Promoters",
+      value: networkData?.counts?.selfMadePromoters || 0,
+      icon: UserPlus,
+      description: "Directly created promoters",
     },
   ]
 

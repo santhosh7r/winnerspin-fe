@@ -10,13 +10,13 @@ const nextConfig = {
       },
     ],
   },
-  
+
   async rewrites() {
     return [
       {
         source: "/api/:path*",
-        destination: "https://api.winnerspin.in.net//:path*", // Proxy to Backend
-        // destination: "http://localhost:3000/:path*", // Proxy to Backend
+        // destination: "https://api.winnerspin.in.net//:path*", // Proxy to Backend
+        destination: "http://localhost:3000/:path*", // Proxy to Backend
 
       },
     ];

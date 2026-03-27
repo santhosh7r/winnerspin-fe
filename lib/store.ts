@@ -9,6 +9,7 @@ import walletSlice from "./promoter/walletSlice";
 import withdrawalSlice from "./promoter/withdrawalSlice";
 import posterSlice from "./promoter/posterSlice";
 import paymentReducer from "./promoter/paymentSlice";
+import networkSlice from "./promoter/networkSlice";
 
 // Customer-related slices
 import customerAuthSlice from "./user/customerAuthSlice";
@@ -28,6 +29,7 @@ export const store = configureStore({
     withdrawal: withdrawalSlice,
     payment: paymentReducer,
     poster: posterSlice,
+    network: networkSlice,
 
     // Customer reducers
     customerAuth: customerAuthSlice,

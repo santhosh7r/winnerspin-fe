@@ -12,6 +12,7 @@ import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { fetchSeasons } from "@/lib/seasonSlice"
 import { fetchRepayments } from "@/lib/promoter/repaymentSlice"
+import { fetchMyNetwork } from "@/lib/promoter/networkSlice"
 
 export default function PromoterDashboard() {
   const { currentSeason } = useSelector((state: RootState) => state.season)
@@ -20,8 +21,11 @@ export default function PromoterDashboard() {
 
   useEffect(() => {
     if (!currentSeason) dispatch(fetchSeasons());
-    // Fetch all dashboard stats data
-    else dispatch(fetchRepayments(currentSeason._id));
+    else {
+      // Fetch all dashboard stats data
+      dispatch(fetchRepayments(currentSeason._id));
+      dispatch(fetchMyNetwork(currentSeason._id));
+    }
   }, [currentSeason, dispatch])
   const { user } = useSelector((state: RootState) => state.auth)
 

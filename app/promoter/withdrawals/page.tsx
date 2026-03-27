@@ -7,6 +7,11 @@ import { Badge } from "@/components/ui/badge"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { fetchWithdrawals } from "@/lib/promoter/withdrawalSlice"
 import { fetchSeasons } from "@/lib/seasonSlice"
+import { fetchPromoterProfile } from "@/lib/promoter/authSlice"
+import { WithdrawalRequestForm } from "@/components/promoter/withdrawal-request-form"
+import { SeasonSwitcher } from "@/components/promoter/season-switcher"
+import { Info } from "lucide-react"
+import { useState } from "react"
 import type { AppDispatch, RootState } from "@/lib/store"
 
 export default function WithdrawalsPage() {
@@ -14,27 +19,38 @@ export default function WithdrawalsPage() {
   const { user } = useSelector((state: RootState) => state.auth)
   const { withdrawals, isLoading } = useSelector((state: RootState) => state.withdrawal)
   const { currentSeason } = useSelector((state: RootState) => state.season)
+  
+  const [isWithdrawalFormOpen, setIsWithdrawalFormOpen] = useState(false)
+  const hasPendingWithdrawal = withdrawals.some((w) => w.status === "pending")
 
   useEffect(() => {
     if (!currentSeason) {
       dispatch(fetchSeasons())
-    } else if (user?.status === "approved") {
+      return
+    }
+    
+    dispatch(fetchPromoterProfile(currentSeason._id))
+
+    if (user?.status === "approved") {
       dispatch(fetchWithdrawals())
     }
-  }, [dispatch, user, currentSeason])
+  }, [dispatch, user?.status, currentSeason])
 
   if (user?.status !== "approved") {
     return (
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-primary">Withdrawals</h1>
-          <p className="text-muted-foreground">Track your withdrawal requests</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-primary">Withdrawals</h1>
+            <p className="text-muted-foreground">Track your withdrawal requests</p>
+          </div>
+          <SeasonSwitcher />
         </div>
 
         <Alert>
-          <AlertDescription>
-            Your account is not approved for the current season. Withdrawal features are only available for approved
-            promoters.
+          <Info className="h-4 w-4" />
+          <AlertDescription className="ml-2">
+            Not active this season. Contact admin.
           </AlertDescription>
         </Alert>
       </div>
@@ -56,9 +72,19 @@ export default function WithdrawalsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-primary">Withdrawals</h1>
-        <p className="text-muted-foreground">Track your withdrawal requests and history</p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-primary">Withdrawals</h1>
+          <p className="text-muted-foreground">Track your withdrawal requests and history</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <SeasonSwitcher />
+          <WithdrawalRequestForm
+            hasPendingWithdrawal={hasPendingWithdrawal}
+            open={isWithdrawalFormOpen}
+            onOpenChange={setIsWithdrawalFormOpen}
+          />
+        </div>
       </div>
 
       <Card>
@@ -76,7 +102,7 @@ export default function WithdrawalsPage() {
           ) : withdrawals.length === 0 ? (
             <div className="text-center py-8">
               <p className="text-muted-foreground">
-                No withdrawal requests found. Make your first withdrawal request from the wallet page.
+                No withdrawal requests found. Make your first withdrawal request.
               </p>
             </div>
           ) : (

@@ -3,7 +3,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSelector, useDispatch } from "react-redux"
-import { LayoutDashboard, Users, CreditCard, Wallet, User, Menu, X, LogOut } from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, Wallet, User, Menu, X, LogOut, Network, UserPlus, TrendingUp, Banknote, Image as ImageIcon, ArrowDownToLine } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { logout } from "@/lib/promoter/authSlice"
@@ -12,10 +12,15 @@ import Image from "next/image"
 
 const navigation = [
   { name: "Dashboard", href: "/promoter/dashboard", icon: LayoutDashboard },
-  { name: "Customers", href: "/promoter/customers", icon: Users },
+  { name: "My Customers", href: "/promoter/customers", icon: Users },
+  { name: "My Network", href: "/promoter/my-network", icon: Network },
+  { name: "Recruit Promoter", href: "/promoter/create-promoter", icon: UserPlus },
   { name: "Repayments", href: "/promoter/repayments", icon: CreditCard },
-  { name: "Wallet", href: "/promoter/wallet", icon: Wallet, requiresApproval: true },
+  { name: "Earnings", href: "/promoter/earnings", icon: TrendingUp },
+  { name: "Withdrawals", href: "/promoter/withdrawals", icon: ArrowDownToLine },
   { name: "Profile", href: "/promoter/profile", icon: User },
+  { name: "Payment Details", href: "/promoter/payment-details", icon: Banknote },
+  { name: "Posters", href: "/promoter/posters", icon: ImageIcon },
 ]
 
 export function Sidebar() {
@@ -29,8 +34,6 @@ export function Sidebar() {
   const handleLogout = () => {
     dispatch(logout())
   }
-
-  const filteredNavigation = navigation.filter((item) => !item.requiresApproval || isApproved)
 
   return (
     <>
@@ -65,7 +68,7 @@ export function Sidebar() {
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-2">
-            {filteredNavigation.map((item) => {
+            {navigation.map((item) => {
               const isActive = pathname === item.href
               return (
                 <Link
