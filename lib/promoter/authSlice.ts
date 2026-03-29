@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../store"
 
 interface PaymentDetails {
@@ -21,7 +21,6 @@ interface User {
   city: string
   state: string
   pincode: string
-  status: "approved" | "pending"
   balance: number
   customers: string[]
   createdBy: string
@@ -168,6 +167,7 @@ const authSlice = createSlice({
       .addCase(loginPromoter.fulfilled, (state, action) => {
         state.isLoading = false
         state.token = action.payload.token
+        state.user = action.payload.promoter || null
         if (typeof window !== "undefined") {
           localStorage.setItem("token", action.payload.token)
         }

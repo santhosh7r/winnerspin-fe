@@ -1,61 +1,35 @@
 "use client"
-import { useSelector } from "react-redux"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Users, CreditCard, Wallet, Network, UserPlus } from "lucide-react"
 import type { RootState } from "@/lib/store"
+import { Network, Users, Wallet } from "lucide-react"
+import { useSelector } from "react-redux"
 
 export function StatsCards() {
   const { user } = useSelector((state: RootState) => state.auth)
-  const { repayments } = useSelector((state: RootState) => state.repayment)
   const { currentSeason } = useSelector((state: RootState) => state.season)
   const { data: networkData } = useSelector((state: RootState) => state.network)
-  const isApproved = user?.status === "approved"
-
-  // Correctly calculate total repayments from the nested structure
-  const totalRepayments = repayments.reduce((count, customer) => count + customer.installments.length, 0)
-  const totalCustomersWithRepayments = repayments.length
+  const { customers } = useSelector((state: RootState) => state.customer)
 
   const stats = [
     {
-      title: "Total Customers",
-      value: totalCustomersWithRepayments,
+      title: "My Balance",
+      value: `₹${user?.balance?.toLocaleString() || 0}`,
+      icon: Wallet,
+      description: "Available earnings this season",
+    },
+    {
+      title: "Customers (this season)",
+      value: customers.length || 0,
       icon: Users,
-      description: "Customers with repayments",
+      description: currentSeason ? `In ${currentSeason.season}` : "This season",
     },
     {
-      title: "Repayments",
-      value: totalRepayments,
-      icon: CreditCard,
-      description: currentSeason ? `In ${currentSeason.season}` : "All seasons",
-    },
-    {
-      title: "My Network Promoters",
+      title: "Network Size (all-time)",
       value: networkData?.counts?.totalNetworkPromoters || 0,
       icon: Network,
       description: "Promoters in your network",
     },
-    {
-      title: "Network Customers",
-      value: networkData?.counts?.totalNetworkCustomers || 0,
-      icon: Users,
-      description: "Customers in your network",
-    },
-    {
-      title: "Self-Made Promoters",
-      value: networkData?.counts?.selfMadePromoters || 0,
-      icon: UserPlus,
-      description: "Directly created promoters",
-    },
   ]
-
-  if (isApproved) {
-    stats.push({
-      title: "Balance",
-      value: user?.balance|| 0,
-      icon: Wallet,
-      description: "Available earnings",
-    })
-  }
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

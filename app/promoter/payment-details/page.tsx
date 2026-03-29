@@ -3,8 +3,11 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { PaymentDetailsForm } from "@/components/promoter/payment-details-form"
+import { Button } from "@/components/ui/button"
 import { fetchPromoterProfile } from "@/lib/promoter/authSlice"
 import { fetchSeasons } from "@/lib/seasonSlice"
+import { removePaymentDetails } from "@/lib/promoter/paymentSlice"
+import { Trash2 } from "lucide-react"
 import type { AppDispatch, RootState } from "@/lib/store"
 
 export default function PaymentDetailsPage() {
@@ -31,7 +34,17 @@ export default function PaymentDetailsPage() {
           <h1 className="text-3xl font-bold text-primary">Payment Details</h1>
           <p className="text-muted-foreground">Manage your payout account information</p>
         </div>
-        <div>
+        <div className="flex gap-2 items-center">
+          {paymentDetails && (
+            <Button variant="destructive" size="sm" onClick={() => {
+              if (confirm("Are you sure you want to remove your payment details?")) {
+                dispatch(removePaymentDetails())
+              }
+            }}>
+              <Trash2 className="h-4 w-4 mr-2" />
+              Remove
+            </Button>
+          )}
           <PaymentDetailsForm />
         </div>
       </div>

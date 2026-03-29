@@ -1,21 +1,20 @@
 "use client"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { SeasonSwitcher } from "@/components/promoter/season-switcher"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Wallet, Info } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { fetchPromoterProfile } from "@/lib/promoter/authSlice"
 import { fetchEarnings } from "@/lib/promoter/walletSlice"
 import { fetchSeasons } from "@/lib/seasonSlice"
-import { fetchPromoterProfile } from "@/lib/promoter/authSlice"
-import { SeasonSwitcher } from "@/components/promoter/season-switcher"
 import type { AppDispatch, RootState } from "@/lib/store"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Wallet, Lock } from "lucide-react"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function EarningsPage() {
   const dispatch = useDispatch<AppDispatch>()
 
-  const { user } = useSelector((state: RootState) => state.auth)
-  const { earnings, transactions, isLoading } = useSelector((state: RootState) => state.wallet)
+  const { earnings, transactions, isLoading, error } = useSelector((state: RootState) => state.wallet)
   const { currentSeason } = useSelector((state: RootState) => state.season)
 
   // Use currentSeason to fetch profile to update status, and then fetch earnings
@@ -26,32 +25,9 @@ export default function EarningsPage() {
     }
 
     dispatch(fetchPromoterProfile(currentSeason._id))
+    dispatch(fetchEarnings())
+  }, [dispatch, currentSeason])
 
-    if (user?.status === "approved") {
-      dispatch(fetchEarnings())
-    }
-  }, [dispatch, currentSeason, user?.status])
-
-  if (user?.status !== "approved") {
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-primary">Earnings</h1>
-            <p className="text-muted-foreground">Manage your earnings</p>
-          </div>
-          <SeasonSwitcher />
-        </div>
-
-        <Alert>
-          <Info className="h-4 w-4" />
-          <AlertDescription className="ml-2">
-            Not active this season. Contact admin.
-          </AlertDescription>
-        </Alert>
-      </div>
-    )
-  }
 
   return (
     <div className="space-y-6">
@@ -65,7 +41,17 @@ export default function EarningsPage() {
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {error ? (
+        <Alert variant="destructive">
+          <Lock className="h-4 w-4" />
+          <AlertTitle>Access Denied</AlertTitle>
+          <AlertDescription className="ml-2">
+            {error}
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 text-card-foreground">
             <CardTitle className="text-sm font-medium text-card-foreground">Season Balance</CardTitle>
@@ -120,6 +106,8 @@ export default function EarningsPage() {
           )}
         </CardContent>
       </Card>
+      </>
+      )}
     </div>
   )
 }

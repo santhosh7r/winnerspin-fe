@@ -1,18 +1,18 @@
 "use client"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { differenceInMonths } from "date-fns"
 import Link from "next/link"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { SeasonSwitcher } from "@/components/promoter/season-switcher"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { StatsCards } from "@/components/promoter/stats-cards"
+
 import { NewPosterPopup } from "@/components/promoter/new-poster-popup"
-import { useSelector } from "react-redux"
-import type { AppDispatch, RootState } from "@/lib/store"
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { fetchSeasons } from "@/lib/seasonSlice"
-import { fetchRepayments } from "@/lib/promoter/repaymentSlice"
+import { StatsCards } from "@/components/promoter/stats-cards"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { fetchMyNetwork } from "@/lib/promoter/networkSlice"
+import { fetchRepayments } from "@/lib/promoter/repaymentSlice"
+import { fetchSeasons } from "@/lib/seasonSlice"
+import type { AppDispatch, RootState } from "@/lib/store"
+import { fetchCustomers } from "@/lib/user/customerSlice"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function PromoterDashboard() {
   const { currentSeason } = useSelector((state: RootState) => state.season)
@@ -25,6 +25,7 @@ export default function PromoterDashboard() {
       // Fetch all dashboard stats data
       dispatch(fetchRepayments(currentSeason._id));
       dispatch(fetchMyNetwork(currentSeason._id));
+      dispatch(fetchCustomers(currentSeason._id));
     }
   }, [currentSeason, dispatch])
   const { user } = useSelector((state: RootState) => state.auth)
@@ -52,7 +53,6 @@ export default function PromoterDashboard() {
           <p className="text-muted-foreground">Welcome back, {user?.username}</p>
         </div>
         <div className="flex items-center gap-2">
-          <SeasonSwitcher />
           <ThemeToggle />
         </div>
       </div>
@@ -108,14 +108,12 @@ export default function PromoterDashboard() {
                 <p className="text-sm text-muted-foreground">Add a repayment for existing customers</p>
               </div>
             </Link>
-            {user?.status === "approved" && (
-              <Link href="/promoter/wallet?action=withdraw">
-                <div className="p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer h-full">
-                  <h3 className="font-medium text-primary mb-2">Request Withdrawal</h3>
-                  <p className="text-sm text-muted-foreground">Withdraw your available earnings</p>
-                </div>
-              </Link>
-            )}
+            <Link href="/promoter/withdrawals">
+              <div className="p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer h-full">
+                <h3 className="font-medium text-primary mb-2">Request Withdrawal</h3>
+                <p className="text-sm text-muted-foreground">Withdraw your available earnings</p>
+              </div>
+            </Link>
           </div>
         </CardContent>
       </Card>

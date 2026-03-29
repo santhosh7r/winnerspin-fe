@@ -1,23 +1,21 @@
 "use client"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { SeasonSwitcher } from "@/components/promoter/season-switcher"
+import { WithdrawalRequestForm } from "@/components/promoter/withdrawal-request-form"
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import { fetchPromoterProfile } from "@/lib/promoter/authSlice"
 import { fetchWithdrawals } from "@/lib/promoter/withdrawalSlice"
 import { fetchSeasons } from "@/lib/seasonSlice"
-import { fetchPromoterProfile } from "@/lib/promoter/authSlice"
-import { WithdrawalRequestForm } from "@/components/promoter/withdrawal-request-form"
-import { SeasonSwitcher } from "@/components/promoter/season-switcher"
-import { Info } from "lucide-react"
-import { useState } from "react"
 import type { AppDispatch, RootState } from "@/lib/store"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Lock } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function WithdrawalsPage() {
   const dispatch = useDispatch<AppDispatch>()
-  const { user } = useSelector((state: RootState) => state.auth)
-  const { withdrawals, isLoading } = useSelector((state: RootState) => state.withdrawal)
+  const { withdrawals, isLoading, error } = useSelector((state: RootState) => state.withdrawal)
   const { currentSeason } = useSelector((state: RootState) => state.season)
   
   const [isWithdrawalFormOpen, setIsWithdrawalFormOpen] = useState(false)
@@ -30,32 +28,9 @@ export default function WithdrawalsPage() {
     }
     
     dispatch(fetchPromoterProfile(currentSeason._id))
+    dispatch(fetchWithdrawals())
+  }, [dispatch, currentSeason])
 
-    if (user?.status === "approved") {
-      dispatch(fetchWithdrawals())
-    }
-  }, [dispatch, user?.status, currentSeason])
-
-  if (user?.status !== "approved") {
-    return (
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-primary">Withdrawals</h1>
-            <p className="text-muted-foreground">Track your withdrawal requests</p>
-          </div>
-          <SeasonSwitcher />
-        </div>
-
-        <Alert>
-          <Info className="h-4 w-4" />
-          <AlertDescription className="ml-2">
-            Not active this season. Contact admin.
-          </AlertDescription>
-        </Alert>
-      </div>
-    )
-  }
 
   const getStatusVariant = (status: string) => {
     switch (status) {
@@ -92,6 +67,17 @@ export default function WithdrawalsPage() {
           <CardTitle>Withdrawal History</CardTitle>
           <CardDescription>All your withdrawal requests and their current status</CardDescription>
         </CardHeader>
+        {error ? (
+          <CardContent className="pt-6">
+            <Alert variant="destructive">
+              <Lock className="h-4 w-4" />
+              <AlertTitle>Access Denied</AlertTitle>
+              <AlertDescription className="ml-2">
+                {error}
+              </AlertDescription>
+            </Alert>
+          </CardContent>
+        ) : (
         <CardContent>
           {isLoading ? (
             <div className="space-y-3">
@@ -136,6 +122,7 @@ export default function WithdrawalsPage() {
             </div>
           )}
         </CardContent>
+        )}
       </Card>
     </div>
   )

@@ -1,14 +1,14 @@
 "use client"
-import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { logout } from "@/lib/promoter/authSlice"
+import type { AppDispatch, RootState } from "@/lib/store"
+import { cn } from "@/lib/utils"
+import { ArrowDownToLine, Banknote, CreditCard, LayoutDashboard, LogOut, Menu, Network, TrendingUp, User, UserPlus, Users, X } from "lucide-react"
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useSelector, useDispatch } from "react-redux"
-import { LayoutDashboard, Users, CreditCard, Wallet, User, Menu, X, LogOut, Network, UserPlus, TrendingUp, Banknote, Image as ImageIcon, ArrowDownToLine } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { logout } from "@/lib/promoter/authSlice"
-import type { RootState, AppDispatch } from "@/lib/store"
-import Image from "next/image"
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 const navigation = [
   { name: "Dashboard", href: "/promoter/dashboard", icon: LayoutDashboard },
@@ -18,9 +18,9 @@ const navigation = [
   { name: "Repayments", href: "/promoter/repayments", icon: CreditCard },
   { name: "Earnings", href: "/promoter/earnings", icon: TrendingUp },
   { name: "Withdrawals", href: "/promoter/withdrawals", icon: ArrowDownToLine },
-  { name: "Profile", href: "/promoter/profile", icon: User },
   { name: "Payment Details", href: "/promoter/payment-details", icon: Banknote },
-  { name: "Posters", href: "/promoter/posters", icon: ImageIcon },
+  { name: "Profile", href: "/promoter/profile", icon: User },
+
 ]
 
 export function Sidebar() {
@@ -28,8 +28,6 @@ export function Sidebar() {
   const pathname = usePathname()
   const dispatch = useDispatch<AppDispatch>()
   const { user } = useSelector((state: RootState) => state.auth)
-
-  const isApproved = user?.status === "approved"
 
   const handleLogout = () => {
     dispatch(logout())

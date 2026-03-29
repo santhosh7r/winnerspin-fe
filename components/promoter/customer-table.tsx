@@ -8,8 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import * as XLSX from "xlsx"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Eye, Download, Search } from "lucide-react"
+import { Search, Lock, Eye, Download } from "lucide-react"
 import { fetchCustomers } from "@/lib/user/customerSlice"
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import type { AppDispatch, RootState } from "@/lib/store"
 import { fetchSeasons } from "@/lib/seasonSlice"
 
@@ -18,7 +19,7 @@ export function CustomerTable() {
 
   const [searchTerm, setSearchTerm] = useState("")
   const [view, setView] = useState<"approved" | "rejected">("approved")
-  const { customers, isLoading } = useSelector((state: RootState) => state.customer)
+  const { customers, isLoading, error } = useSelector((state: RootState) => state.customer)
   const { currentSeason } = useSelector((state: RootState) => state.season)
   useEffect(() => {
     if (currentSeason) {
@@ -77,6 +78,22 @@ export function CustomerTable() {
               <div key={i} className="h-12 bg-muted animate-pulse rounded" />
             ))}
           </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <Alert variant="destructive">
+            <Lock className="h-4 w-4" />
+            <AlertTitle>Access Denied</AlertTitle>
+            <AlertDescription className="ml-2">
+              {error}
+            </AlertDescription>
+          </Alert>
         </CardContent>
       </Card>
     )

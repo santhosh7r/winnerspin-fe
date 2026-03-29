@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "../store"
 import { fetchPromoterProfile } from "./authSlice"
 
@@ -59,6 +59,37 @@ export const addPaymentDetails = createAsyncThunk(
   },
 )
 
+export const removePaymentDetails = createAsyncThunk(
+  "payment/removePaymentDetails",
+  async (_, { getState, rejectWithValue }) => {
+    const state = getState() as RootState
+    const token = state.auth.token
+    const seasonId = state.season.currentSeason?._id
+
+    if (!token || !seasonId) {
+      return rejectWithValue("Authentication token or season ID is missing.")
+    }
+
+    try {
+      const response = await fetch(`/api/promoter/payment-details?seasonId=${seasonId}`, {
+        method: "DELETE",
+        headers: {
+          token: token,
+          seasonid: seasonId,
+        },
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        return rejectWithValue(data.message || "Failed to remove payment details")
+      }
+      return data
+    } catch (error) {
+      if(error instanceof Error) return rejectWithValue(error.message);
+      return rejectWithValue("An error occurred while removing payment details")
+    }
+  },
+)
+
 const paymentSlice = createSlice({
   name: "payment",
   initialState,
@@ -81,6 +112,18 @@ const paymentSlice = createSlice({
       })
       .addCase(addPaymentDetails.fulfilled, (state, action: PayloadAction<PaymentDetails>) => {
         state.details = action.payload
+      })
+      .addCase(removePaymentDetails.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(removePaymentDetails.fulfilled, (state) => {
+        state.isLoading = false
+        state.details = null
+      })
+      .addCase(removePaymentDetails.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = (action.payload as string) || "Failed to remove payment details"
       })
   },
 })

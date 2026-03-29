@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation"
 import { fetchNetworkPromoter, clearDetailPromoter } from "@/lib/promoter/networkSlice"
 import { AppDispatch, RootState } from "@/lib/store"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { SeasonSwitcher } from "@/components/promoter/season-switcher"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -65,9 +64,6 @@ export default function NetworkPromoterDetailPage() {
           </h1>
           <p className="text-muted-foreground">Promoter Details</p>
         </div>
-        <div className="flex items-center gap-2">
-          <SeasonSwitcher />
-        </div>
       </div>
 
       <Card>
@@ -86,8 +82,8 @@ export default function NetworkPromoterDetailPage() {
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Status</p>
                  {promoter.isActive === false ? (
-                    <span className="px-2 py-1 rounded text-xs bg-red-100 text-red-800">
-                      Inactive <Info className="inline h-3 w-3 ml-1"/>
+                    <span className="px-2 py-1 rounded text-xs bg-red-100 text-red-800" title="Not active this season">
+                      Not active this season <Info className="inline h-3 w-3 ml-1"/>
                     </span>
                   ) : (
                     <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">

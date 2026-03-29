@@ -1,16 +1,14 @@
 "use client"
-import { useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import Link from "next/link"
-import { format } from "date-fns"
-import { fetchMyNetwork, NetworkData } from "@/lib/promoter/networkSlice"
-import { AppDispatch, RootState } from "@/lib/store"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { SeasonSwitcher } from "@/components/promoter/season-switcher"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Users, UserPlus, Network, Info, Eye } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { fetchMyNetwork } from "@/lib/promoter/networkSlice"
+import { AppDispatch, RootState } from "@/lib/store"
+import { Eye, Info, Network, UserPlus, Users } from "lucide-react"
+import Link from "next/link"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function MyNetworkPage() {
   const dispatch = useDispatch<AppDispatch>()
@@ -40,7 +38,6 @@ export default function MyNetworkPage() {
           <p className="text-muted-foreground">Manage your sub-promoters and their customers</p>
         </div>
         <div className="flex items-center gap-2">
-          <SeasonSwitcher />
           <Link href="/promoter/create-promoter">
             <Button>+ Add Promoter</Button>
           </Link>
@@ -120,8 +117,8 @@ export default function MyNetworkPage() {
                         )}
                         <TableCell>
                           {promoter.isActive === false ? (
-                            <span className="px-2 py-1 rounded text-xs bg-red-100 text-red-800" title="Inactive - their network is still active">
-                              Inactive <Info className="inline h-3 w-3 ml-1"/>
+                            <span className="px-2 py-1 rounded text-xs bg-red-100 text-red-800" title="Not active this season">
+                              Not active this season <Info className="inline h-3 w-3 ml-1"/>
                             </span>
                           ) : (
                             <span className="px-2 py-1 rounded text-xs bg-green-100 text-green-800">
@@ -131,7 +128,7 @@ export default function MyNetworkPage() {
                         </TableCell>
                         <TableCell>
                           <Link href={`/promoter/my-network/${promoter._id}`}>
-                            <Button variant="outline" size="sm"><Eye className="h-4 w-4 mr-1"/> View Network</Button>
+                            <Button variant="outline" size="sm"><Eye className="h-4 w-4 mr-1"/> View Profile</Button>
                           </Link>
                         </TableCell>
                       </TableRow>

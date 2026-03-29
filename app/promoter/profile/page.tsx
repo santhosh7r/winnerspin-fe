@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
 import { User, Mail, MapPin, CreditCard, Edit, Save, X, KeyRound } from "lucide-react"
 // You will need to create this `changePromoterPassword` thunk in your authSlice
@@ -195,9 +194,6 @@ export default function ProfilePage() {
     )
   }
 
-  const getStatusColor = (status: string) => {
-    return status === "approved" ? "default" : "secondary"
-  }
 
   return (
     <div className="space-y-6">
@@ -243,7 +239,7 @@ export default function ProfilePage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2">
             <div>
               <Label htmlFor="username">Username</Label>
               <Input
@@ -256,12 +252,6 @@ export default function ProfilePage() {
             <div>
               <Label>User ID</Label>
               <p className="text-lg font-mono">{user.userid}</p>
-            </div>
-            <div>
-              <Label>Status for {currentSeason?.season}</Label>
-              <Badge variant={getStatusColor(user.status)} className="mt-1">
-                {user.status === "approved" ? "Approved" : "Pending Approval"}
-              </Badge>
             </div>
           </div>
         </CardContent>
@@ -396,12 +386,10 @@ export default function ProfilePage() {
               <p className="text-sm font-medium text-muted-foreground">Total Customers</p>
               <p className="text-2xl font-bold text-primary">{repayments.length || 0}</p>
             </div>
-            {user.status === "approved" && (
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Current Balance</p>
-                <p className="text-2xl font-bold text-primary">₹{user.balance?.toLocaleString() || 0}</p>
-              </div>
-            )}
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Current Balance</p>
+              <p className="text-2xl font-bold text-primary">₹{user.balance?.toLocaleString() || 0}</p>
+            </div>
             <div>
               <p className="text-sm font-medium text-muted-foreground">Account Created</p>
               <p className="text-lg">Recently</p>
@@ -418,14 +406,6 @@ export default function ProfilePage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {user.status !== "approved" && !isEditing && (
-              <Alert>
-                <AlertDescription>
-                  Your account is pending approval. Some features may be limited until your account is approved by an
-                  administrator.
-                </AlertDescription>
-              </Alert>
-            )}
             <div className="flex flex-wrap gap-2">
               <Dialog open={isPasswordDialogOpen} onOpenChange={handlePasswordDialogOpenChange}>
                 <DialogTrigger asChild>

@@ -1,13 +1,13 @@
 "use client"
-import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
-import { CustomerForm } from "@/components/user/customer-form"
 import { CustomerTable } from "@/components/promoter/customer-table"
 import { NetworkCustomerTable } from "@/components/promoter/network-customer-table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useSelector, useDispatch } from "react-redux"
+import { CustomerForm } from "@/components/user/customer-form"
 import { fetchMyNetwork } from "@/lib/promoter/networkSlice"
 import type { AppDispatch, RootState } from "@/lib/store"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 
 export default function CustomersPage() {
   const searchParams = useSearchParams()
