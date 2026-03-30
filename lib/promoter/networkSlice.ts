@@ -118,7 +118,7 @@ export const fetchNetworkPromoter = createAsyncThunk(
 
 export const createPromoter = createAsyncThunk(
   "network/createPromoter",
-  async (promoterData: any, { getState, rejectWithValue }) => {
+  async (promoterData: Record<string, string>, { getState, rejectWithValue }) => {
     const state = getState() as RootState
     try {
       const response = await fetch("/api/promoter/create-promoter", {
@@ -182,7 +182,7 @@ const networkSlice = createSlice({
         state.isLoading = true
         state.error = null
       })
-      .addCase(createPromoter.fulfilled, (state, action) => {
+      .addCase(createPromoter.fulfilled, (state) => {
         state.isLoading = false
         // optionally refetch or update network
       })

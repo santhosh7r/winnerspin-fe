@@ -6,7 +6,7 @@ import { fetchNetworkPromoter, clearDetailPromoter } from "@/lib/promoter/networ
 import { AppDispatch, RootState } from "@/lib/store"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ChevronLeft, Info, Eye } from "lucide-react"
 
@@ -140,7 +140,7 @@ export default function NetworkPromoterDetailPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(customerTab === "self-made" ? selfMadeCustomers : networkCustomers).map((customer: any) => (
+                {(customerTab === "self-made" ? selfMadeCustomers : networkCustomers).map((customer) => (
                   <TableRow key={customer._id}>
                     <TableCell className="font-medium">{customer.cardNo || "-"}</TableCell>
                     <TableCell>{customer.username}</TableCell>

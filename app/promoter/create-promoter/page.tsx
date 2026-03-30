@@ -54,7 +54,7 @@ export default function CreatePromoterPage() {
           pincode: "",
         })
       }
-    } catch (err) {
+    } catch {
       // Error is handled by Redux state
     }
   }

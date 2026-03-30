@@ -14,7 +14,7 @@ export default function MyNetworkPage() {
   const dispatch = useDispatch<AppDispatch>()
   const { currentSeason } = useSelector((state: RootState) => state.season)
   const { data, isLoading } = useSelector((state: RootState) => state.network)
-  const { user } = useSelector((state: RootState) => state.auth)
+
   
   const [promoterTab, setPromoterTab] = useState("self-made")
   const [customerTab, setCustomerTab] = useState("self-made")
@@ -106,7 +106,7 @@ export default function MyNetworkPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(promoterTab === "self-made" ? data?.selfMadePromoters : data?.networkPromoters)?.map((promoter: any) => (
+                    {(promoterTab === "self-made" ? data?.selfMadePromoters : data?.networkPromoters)?.map((promoter) => (
                       <TableRow key={promoter._id} className={promoter.isActive === false ? "opacity-60" : ""}>
                         <TableCell className="font-medium">{promoter.userid}</TableCell>
                         <TableCell>{promoter.username}</TableCell>
@@ -175,7 +175,7 @@ export default function MyNetworkPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(customerTab === "self-made" ? data?.selfMadeCustomers : data?.networkCustomers)?.map((customer: any) => (
+                    {(customerTab === "self-made" ? data?.selfMadeCustomers : data?.networkCustomers)?.map((customer) => (
                       <TableRow key={customer._id}>
                         <TableCell className="font-medium">{customer.cardNo || "-"}</TableCell>
                         <TableCell>{customer.username}</TableCell>

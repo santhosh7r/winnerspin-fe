@@ -1,10 +1,8 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useSelector } from "react-redux"
-import { LayoutDashboard, Users, CreditCard, Wallet, User, Network, UserPlus, TrendingUp, Banknote, Image as ImageIcon, ArrowDownToLine } from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, User, Network, UserPlus, TrendingUp, Banknote, Image as ImageIcon, ArrowDownToLine } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { RootState } from "@/lib/store"
 
 const navigation = [
   { name: "Dashboard", href: "/promoter/dashboard", icon: LayoutDashboard },
@@ -21,9 +19,6 @@ const navigation = [
 
 export function MobileNav() {
   const pathname = usePathname()
-  const { user } = useSelector((state: RootState) => state.auth)
-
-  const isApproved = user?.status === "approved"
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-sidebar border-t border-sidebar-border z-40">
