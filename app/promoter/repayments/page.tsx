@@ -1,9 +1,9 @@
 "use client"
-import { useEffect, useState } from "react"
-import { useSearchParams } from "next/navigation"
 import { RepaymentForm } from "@/components/promoter/repayment-form"
-import { RepaymentTable } from "@/components/promoter/repayment-table"
 import { RepaymentStats } from "@/components/promoter/repayment-stats"
+import { RepaymentTable } from "@/components/promoter/repayment-table"
+import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function RepaymentsPage() {
     const searchParams = useSearchParams()

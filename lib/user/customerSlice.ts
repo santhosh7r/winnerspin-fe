@@ -41,11 +41,11 @@ export const fetchCustomers = createAsyncThunk("customer/fetchCustomers", async 
     },
   })
 
+  const data = await response.json()
   if (!response.ok) {
-    throw new Error("Failed to fetch customers")
+    throw new Error(data.message || "Failed to fetch customers")
   }
 
-  const data = await response.json()
   return data.customers
 })
 

@@ -10,9 +10,9 @@ import { fetchRepayments } from "@/lib/promoter/repaymentSlice"
 import type { AppDispatch, RootState } from "@/lib/store"
 import { Button } from "@/components/ui/button"
 import { AddRepaymentForm } from "./add-repayment-form"
-import { Alert, AlertDescription } from "../ui/alert"
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert"
 import { fetchCustomers } from "@/lib/user/customerSlice"
-import { Download } from "lucide-react"
+import { Download, Lock } from "lucide-react"
 
 export function RepaymentTable() {
   const dispatch = useDispatch<AppDispatch>()
@@ -112,6 +112,18 @@ export function RepaymentTable() {
 
   return (
     <Card>
+      {error ? (
+        <CardContent className="pt-6">
+          <Alert variant="destructive">
+            <Lock className="h-4 w-4" />
+            <AlertTitle>Access Denied</AlertTitle>
+            <AlertDescription className="ml-2">
+              {error}
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      ) : (
+      <>
       <CardHeader className="flex flex-row items-center justify-between">
         <div>
           <CardTitle>Installment Status</CardTitle>
@@ -124,11 +136,6 @@ export function RepaymentTable() {
         </Button>
       </CardHeader>
       <CardContent>
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
         {repayments.length === 0 && !isLoading ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground">No customers found for this season.</p>
@@ -194,6 +201,8 @@ export function RepaymentTable() {
           </div>
         )}
       </CardContent>
+      </>
+      )}
     </Card>
   )
 }

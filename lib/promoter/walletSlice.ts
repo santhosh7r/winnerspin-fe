@@ -35,11 +35,11 @@ export const fetchEarnings = createAsyncThunk("wallet/fetchEarnings", async (_, 
     },
   })
 
+  const data = await response.json()
   if (!response.ok) {
-    throw new Error("Failed to fetch earnings")
+    throw new Error(data.message || "Failed to fetch earnings")
   }
 
-  const data = await response.json()
   return data as { earnings: number; transactions: Transaction[] }
 })
 

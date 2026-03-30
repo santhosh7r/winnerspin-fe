@@ -31,11 +31,11 @@ export const fetchWithdrawals = createAsyncThunk(
     },
   })
 
+  const data = await response.json()
   if (!response.ok) {
-    throw new Error("Failed to fetch withdrawals")
+    throw new Error(data.message || "Failed to fetch withdrawals")
   }
 
-  const data = await response.json()
   return data.withdrawals
   },
 )
