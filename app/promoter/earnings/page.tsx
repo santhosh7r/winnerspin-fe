@@ -44,7 +44,7 @@ export default function EarningsPage() {
       {error ? (
         <Alert variant="destructive">
           <Lock className="h-4 w-4" />
-          <AlertTitle>Access Denied</AlertTitle>
+          <AlertTitle>Access Denied!</AlertTitle>
           <AlertDescription className="ml-2">
             {error}
           </AlertDescription>
