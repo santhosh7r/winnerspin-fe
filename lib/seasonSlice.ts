@@ -58,7 +58,7 @@ const seasonSlice = createSlice({
         state.isLoading = true
         state.error = null
       })
-      .addCase(fetchSeasons.fulfilled, (state, action: any) => {
+      .addCase(fetchSeasons.fulfilled, (state, action: PayloadAction<{ approvedSeasons?: Season[], seasons?: Season[], curSeason?: Season } | Season[]>) => {
         state.isLoading = false
         state.hasFetched = true
         
@@ -67,8 +67,9 @@ const seasonSlice = createSlice({
         if (Array.isArray(action.payload)) {
           fetchedSeasons = action.payload
         } else if (action.payload) {
-          fetchedSeasons = (action.payload.approvedSeasons?.length > 0) ? action.payload.approvedSeasons : (action.payload.seasons || action.payload.approvedSeasons || [])
-          curSeason = action.payload.curSeason || null
+          const { approvedSeasons, seasons } = action.payload
+          fetchedSeasons = (approvedSeasons && approvedSeasons.length > 0) ? approvedSeasons : (seasons ?? approvedSeasons ?? [])
+          curSeason = action.payload.curSeason ?? null
         }
 
         state.seasons = fetchedSeasons

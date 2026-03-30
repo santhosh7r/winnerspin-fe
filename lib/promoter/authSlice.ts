@@ -25,6 +25,7 @@ interface User {
   customers: string[]
   createdBy: string
   payment?: PaymentDetails
+  status?: string
 }
 
 interface AuthState {
