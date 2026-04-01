@@ -16,9 +16,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="overscroll-none h-full">
+    <html lang="en" className="h-full">
       <body
-        className={`h-full overflow-y-auto overscroll-none bg-white-50 dark:bg-gray-900 font-sans ${GeistSans.variable} ${GeistMono.variable}`}
+        className={`h-full bg-white-50 dark:bg-gray-900 font-sans ${GeistSans.variable} ${GeistMono.variable}`}
       >
         <ReduxProvider>{children}</ReduxProvider>
       </body>

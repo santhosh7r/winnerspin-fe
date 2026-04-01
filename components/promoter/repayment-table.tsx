@@ -138,7 +138,7 @@ export function RepaymentTable() {
       <CardContent>
         {repayments.length === 0 && !isLoading ? (
           <div className="text-center py-8">
-            <p className="text-muted-foreground">No customers found for this season.</p>
+            <p className="text-muted-foreground">No customers yet.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { RootState } from "../store"
 
 interface Transaction {
@@ -71,3 +71,4 @@ const walletSlice = createSlice({
 
 export const { clearError } = walletSlice.actions
 export default walletSlice.reducer
+

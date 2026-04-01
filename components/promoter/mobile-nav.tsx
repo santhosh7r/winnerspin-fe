@@ -14,7 +14,6 @@ const navigation = [
   { name: "Withdrawals", href: "/promoter/withdrawals", icon: ArrowDownToLine },
   { name: "Profile", href: "/promoter/profile", icon: User },
   { name: "Payment", href: "/promoter/payment-details", icon: Banknote },
-  { name: "Posters", href: "/promoter/posters", icon: ImageIcon },
 ]
 
 export function MobileNav() {
@@ -22,7 +21,7 @@ export function MobileNav() {
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-sidebar border-t border-sidebar-border z-40">
-      <nav className="flex justify-around py-2">
+      <nav className="flex overflow-x-auto space-x-1 py-1 no-scrollbar scroll-smooth px-2">
         {navigation.map((item) => {
           const isActive = pathname === item.href
           return (
@@ -30,12 +29,12 @@ export function MobileNav() {
               key={item.name}
               href={item.href}
               className={cn(
-                "flex flex-col items-center gap-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors min-w-0",
-                isActive ? "text-sidebar-primary" : "text-sidebar-foreground",
+                "flex flex-col items-center justify-center gap-1 p-2 rounded-lg text-[10px] font-medium transition-colors min-w-[72px] shrink-0",
+                isActive ? "text-sidebar-primary bg-sidebar-accent/10" : "text-sidebar-foreground",
               )}
             >
-              <item.icon className="h-4 w-4" />
-              <span className="truncate">{item.name}</span>
+              <item.icon className="h-5 w-5 shrink-0" />
+              <span className="truncate w-full text-center">{item.name}</span>
             </Link>
           )
         })}

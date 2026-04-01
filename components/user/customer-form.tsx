@@ -108,10 +108,6 @@ export const CustomerForm = ({ open, onOpenChange }: CustomerFormProps) => {
       setFormError("Mobile number must be 10 digits.")
       return
     }
-    if (!/^WS[A-Z0-9]{1,8}$/.test(formData.cardNo)) {
-      setFormError("Card number must start with 'WS' and be at most 10 characters long.")
-      return
-    }
     if (!/^\d{6}$/.test(formData.pincode)) {
       setFormError("Pincode must be 6 digits.")
       return
@@ -144,20 +140,13 @@ export const CustomerForm = ({ open, onOpenChange }: CustomerFormProps) => {
   }
 
   const handleInputChange = (field: string, value: string) => {
-    let processedValue = value
-    if (field === "cardNo") {
-      processedValue = value.toUpperCase()
-      if (!processedValue.startsWith("WS")) {
-        processedValue = "WS" + processedValue.replace(/^WS/, "")
-      }
-    }
-    setFormData((prev) => ({ ...prev, [field]: processedValue }))
+    setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="gap-2">
+        <Button className="gap-2 w-full sm:w-auto h-11 sm:h-10">
           <Plus className="h-4 w-4" />
           Add Customer
         </Button>
@@ -206,8 +195,8 @@ export const CustomerForm = ({ open, onOpenChange }: CustomerFormProps) => {
               <Label htmlFor="email">Card Number</Label>
               <Input
                 id="cardNo"
-                type="cardNo"
-                value={formData.cardNo.toUpperCase()}
+                type="text"
+                value={formData.cardNo}
                 onChange={(e) => handleInputChange("cardNo", e.target.value)}
                 placeholder="WS0001"
                 required

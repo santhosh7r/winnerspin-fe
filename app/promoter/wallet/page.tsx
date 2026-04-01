@@ -56,7 +56,7 @@ export default function WalletPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-primary">Wallet</h1>
+          <h1 className="text-3xl font-bold text-primary">Earnings</h1>
           <p className="text-muted-foreground">Manage your earnings and withdrawals</p>
         </div>
 
@@ -71,13 +71,13 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-primary">Wallet</h1>
-          <p className="text-muted-foreground">Manage your earnings and withdrawals</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">Earnings</h1>
+          <p className="text-xs sm:text-sm text-muted-foreground">Manage your earnings and withdrawals</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <PaymentDetailsForm />
           <WithdrawalRequestForm
             hasPendingWithdrawal={hasPendingWithdrawal}
@@ -88,114 +88,73 @@ export default function WalletPage() {
       </div>
 
       {/* Earnings Overview */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 text-card-foreground">
-            <CardTitle className="text-sm font-medium text-card-foreground">Balance</CardTitle>
-            <Wallet className="h-4 w-4 text-muted-foreground" />
+      <div className="grid gap-3 grid-cols-2 lg:grid-cols-3">
+        <Card className="col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 px-3 pt-3">
+            <CardTitle className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground truncate">Balance</CardTitle>
+            <Wallet className="h-3 w-3 text-muted-foreground shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">
-              {isLoading ? "Loading..." : `₹${earnings.toLocaleString()}`}
+          <CardContent className="px-3 pb-3">
+            <div className="text-lg sm:text-2xl font-bold text-primary">
+              {isLoading ? "..." : `₹${earnings.toLocaleString()}`}
             </div>
-            <p className="text-xs text-muted-foreground">Earnings in this season</p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 text-card-foreground">
-            <CardTitle className="text-sm font-medium text-card-foreground">Payment Status</CardTitle>
-            <CreditCard className="h-4 w-4 text-muted-foreground" />
+        <Card className="col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 px-3 pt-3">
+            <CardTitle className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground truncate">Bank Details</CardTitle>
+            <CreditCard className="h-3 w-3 text-muted-foreground shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">{paymentDetails ? "Setup" : "Pending"}</div>
-            <p className="text-xs text-muted-foreground">
-              {paymentDetails ? "Bank details added" : "Add bank details"}
-            </p>
+          <CardContent className="px-3 pb-3">
+            <div className="text-base sm:text-2xl font-bold text-primary">{paymentDetails ? "Setup" : "Pending"}</div>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 text-card-foreground">
-            <CardTitle className="text-sm font-medium text-card-foreground">Account Status</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+        <Card className="col-span-2 lg:col-span-1">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 px-3 pt-3">
+            <CardTitle className="text-[10px] uppercase tracking-wider font-medium text-muted-foreground truncate">Account Status</CardTitle>
+            <TrendingUp className="h-3 w-3 text-muted-foreground shrink-0" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-primary">Approved</div>
-            <p className="text-xs text-muted-foreground">Eligible for withdrawals</p>
+          <CardContent className="px-3 pb-3">
+            <div className="text-base sm:text-2xl font-bold text-primary">Approved</div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Payment Details */}
-      {paymentDetails && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Payment Details</CardTitle>
-            <CardDescription>Your registered bank account for withdrawals</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Account Holder</p>
-                <p className="text-lg">{paymentDetails.accHolderName}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Bank Name</p>
-                <p className="text-lg">{paymentDetails.bankName}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Account Number</p>
-                <p className="text-lg font-mono">****{paymentDetails.accNo.slice(-4)}</p>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">IFSC Code</p>
-                <p className="text-lg font-mono">{paymentDetails.ifscCode}</p>
-              </div>
-              {paymentDetails.upiId && (
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">UPI ID</p>
-                  <p className="text-lg font-mono">{paymentDetails.upiId}</p>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
       {/* Earning History */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Earning History</CardTitle>
-          <CardDescription>Your commission history for the current season.</CardDescription>
+      <Card className="border-0 sm:border shadow-none sm:shadow-sm">
+        <CardHeader className="px-0 sm:px-6">
+          <CardTitle className="text-base sm:text-lg">Earning History</CardTitle>
+          <CardDescription className="text-xs">Your commission history for the current season.</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 sm:px-6">
           {isLoading ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-12 bg-muted animate-pulse rounded" />
+                <div key={i} className="h-10 bg-muted animate-pulse rounded" />
               ))}
             </div>
           ) : transactions.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">No earnings recorded for this season yet.</p>
+              <p className="text-muted-foreground text-xs">No earnings recorded for this season yet.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto w-full no-scrollbar">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Customer ID</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    <TableHead className="whitespace-nowrap">Date</TableHead>
+                    <TableHead className="whitespace-nowrap">Customer ID</TableHead>
+                    <TableHead className="whitespace-nowrap text-right">Amount</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {transactions.map((transaction) => (
                     <TableRow key={transaction._id}>
-                      <TableCell>{new Date(transaction.createdAt).toLocaleDateString()}</TableCell>
-                      <TableCell className="font-mono text-xs">{transaction.customer}</TableCell>
-                      <TableCell className="text-right font-semibold text-green-600">+ ₹{transaction.amount.toLocaleString()}</TableCell>
+                      <TableCell className="whitespace-nowrap text-xs">{new Date(transaction.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell className="whitespace-nowrap font-mono text-xs">{transaction.customer}</TableCell>
+                      <TableCell className="whitespace-nowrap text-right font-semibold text-green-600 text-xs">+ ₹{transaction.amount.toLocaleString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -206,46 +165,44 @@ export default function WalletPage() {
       </Card>
 
       {/* Withdrawal History */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Withdrawal History</CardTitle>
-          <CardDescription>All your withdrawal requests and their current status</CardDescription>
+      <Card className="border-0 sm:border shadow-none sm:shadow-sm">
+        <CardHeader className="px-0 sm:px-6">
+          <CardTitle className="text-base sm:text-lg">Withdrawal History</CardTitle>
+          <CardDescription className="text-xs">All your withdrawal requests and their current status</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-0 sm:px-6">
           {isWithdrawalsLoading ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {[...Array(3)].map((_, i) => (
-                <div key={i} className="h-12 bg-muted animate-pulse rounded" />
+                <div key={i} className="h-10 bg-muted animate-pulse rounded" />
               ))}
             </div>
           ) : withdrawals.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">
-                No withdrawal requests found. Make your first withdrawal request to get started.
-              </p>
+              <p className="text-muted-foreground text-xs">No withdrawal requests found.</p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto w-full no-scrollbar">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Requested Date</TableHead>
-                    {/* <TableHead>Processed Date</TableHead> */}
+                    <TableHead className="whitespace-nowrap">Amount</TableHead>
+                    <TableHead className="whitespace-nowrap">Status</TableHead>
+                    <TableHead className="whitespace-nowrap text-right">Requested Date</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {withdrawals.map((withdrawal) => (
                     <TableRow key={withdrawal._id}>
-                      <TableCell className="font-semibold text-primary">
+                      <TableCell className="whitespace-nowrap font-semibold text-primary text-xs">
                         ₹{withdrawal.amount.toLocaleString()}
                       </TableCell>
-                      <TableCell>
-                        <Badge variant={withdrawal.status === 'approved' ? 'default' : withdrawal.status === 'rejected' ? 'destructive' : 'secondary'}>{withdrawal.status}</Badge>
+                      <TableCell className="whitespace-nowrap">
+                        <Badge variant={withdrawal.status === 'approved' ? 'default' : withdrawal.status === 'rejected' ? 'destructive' : 'secondary'} className="text-[10px]">
+                            {withdrawal.status}
+                        </Badge>
                       </TableCell>
-                      <TableCell>{new Date(withdrawal.createdAt).toLocaleDateString()}</TableCell>
-                      {/* <TableCell>{withdrawal.processedAt ? new Date(withdrawal.processedAt).toLocaleDateString() : "-"}</TableCell> */}
+                      <TableCell className="whitespace-nowrap text-right text-xs">{new Date(withdrawal.createdAt).toLocaleDateString()}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

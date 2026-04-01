@@ -134,44 +134,40 @@ export function CustomerTable() {
       <CardContent>
         {filteredCustomers.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-muted-foreground">No customers found. Add your first customer to get started.</p>
+            <p className="text-muted-foreground">No customers yet.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full no-scrollbar">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Mobile</TableHead>
-                  <TableHead>Card No</TableHead>
-                  <TableHead>City</TableHead>
-                  <TableHead>Joined Date</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className="whitespace-nowrap">Username</TableHead>
+                  <TableHead className="whitespace-nowrap">Email</TableHead>
+                  <TableHead className="whitespace-nowrap">Mobile</TableHead>
+                  <TableHead className="whitespace-nowrap">Card No</TableHead>
+                  <TableHead className="whitespace-nowrap">City</TableHead>
+                  <TableHead className="whitespace-nowrap">Joined Date</TableHead>
+                  <TableHead className="whitespace-nowrap">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredCustomers.map((customer) => (
                   <TableRow key={customer._id}>
-                    <TableCell className="font-medium">{customer.username}</TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{customer.mobile}</TableCell>
-                    <TableCell>{customer.cardNo}</TableCell>
-                    <TableCell>{customer.city}</TableCell>
-                    <TableCell>{format(new Date(customer.createdAt), "dd/MM/yyyy")}</TableCell>
-                    <TableCell className="flex gap-2">
-                      <Button asChild variant="outline" size="sm" className="gap-2 bg-transparent">
-                        <Link href={`/promoter/customers/${customer._id}`}>
-                            <Eye className="h-3 w-3" />
-                            View
-                        </Link>
-                      </Button>
-                      {/* <Button asChild variant="outline" size="sm" className="gap-2 bg-transparent">
-                        <Link href={`/promoter/customers/${customer._id}`}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-file-pen-line"><path d="m18 5-3-3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2Z"/><path d="M8 18h1"/><path d="M18.4 9.6a2 2 0 1 1 3 3L17 17l-4 1 1-4Z"/></svg>
-                            Edit
-                        </Link>
-                      </Button> */}
+                    <TableCell className="font-medium whitespace-nowrap">
+                        {customer.username}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.email}</TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.mobile}</TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.cardNo}</TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.city}</TableCell>
+                    <TableCell className="whitespace-nowrap">{format(new Date(customer.createdAt), "dd/MM/yyyy")}</TableCell>
+                    <TableCell className="flex gap-2 whitespace-nowrap">
+                        <Button asChild variant="outline" size="sm" className="gap-2 bg-transparent h-8">
+                            <Link href={`/promoter/customers/${customer._id}`}>
+                                <Eye className="h-3 w-3" />
+                                View
+                            </Link>
+                        </Button>
                     </TableCell>
                   </TableRow>
                 ))}

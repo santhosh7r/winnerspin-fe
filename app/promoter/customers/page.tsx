@@ -37,20 +37,21 @@ export default function CustomersPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-primary">Customers</h1>
-          <p className="text-muted-foreground">Manage your customer database</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary">Customers</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Manage your customer database</p>
         </div>
         <CustomerForm open={isFormOpen} onOpenChange={setIsFormOpen} />
       </div>
 
-      <div className="text-sm font-medium text-muted-foreground bg-muted p-3 rounded-lg flex items-center justify-between">
-        <span>Showing {selfMadeCount} self-made + {networkCount} network customers = {totalCount} Total</span>
+      <div className="text-xs sm:text-sm font-medium text-muted-foreground bg-muted p-3 rounded-lg flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <span>Showing {selfMadeCount} self made + {networkCount} my network customers</span>
+        <span className="font-bold">= {totalCount} Total</span>
       </div>
 
       <Tabs defaultValue="self-made" className="w-full">
         <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
-          <TabsTrigger value="self-made">My Customers</TabsTrigger>
-          <TabsTrigger value="network">Network Customers</TabsTrigger>
+          <TabsTrigger value="self-made">Self Made</TabsTrigger>
+          <TabsTrigger value="network">My Network</TabsTrigger>
         </TabsList>
         <TabsContent value="self-made" className="mt-6">
           <CustomerTable />

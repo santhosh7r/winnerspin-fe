@@ -34,7 +34,7 @@ export function SeasonSwitcher() {
 
   return (
     <Select value={currentSeason?._id || ""} onValueChange={handleSeasonChange}>
-      <SelectTrigger className="w-48">
+      <SelectTrigger className="w-[150px] sm:w-48">
         <SelectValue placeholder="Select season" />
       </SelectTrigger>
       <SelectContent>

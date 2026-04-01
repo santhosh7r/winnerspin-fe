@@ -9,19 +9,33 @@ import { fetchSeasons } from "@/lib/seasonSlice"
 import type { AppDispatch, RootState } from "@/lib/store"
 import { usePathname, useRouter } from "next/navigation"
 import type React from "react"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { cn } from "@/lib/utils"
 
 export default function PromoterLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const dispatch = useDispatch<AppDispatch>()
   const { token, user } = useSelector((state: RootState) => state.auth)
   const { currentSeason, hasFetched, seasons } = useSelector((state: RootState) => state.season)
+
+  // Sync collapsed state with local storage
+  useEffect(() => {
+    const saved = localStorage.getItem("promoter-sidebar-collapsed")
+    if (saved !== null) setIsSidebarCollapsed(saved === "true")
+  }, [])
+
+  const toggleSidebarCollapse = () => {
+    const next = !isSidebarCollapsed
+    setIsSidebarCollapsed(next)
+    localStorage.setItem("promoter-sidebar-collapsed", String(next))
+  }
 
   useEffect(() => {
     if (!token && pathname !== "/promoter/login") {
@@ -46,7 +60,6 @@ export default function PromoterLayout({
     return null
   }
 
-  // Show a loading screen for the entire layout until the season is determined
   if (token && !hasFetched && pathname !== "/promoter/login") {
     return <div className="flex h-screen items-center justify-center">Loading season data...</div>
   }
@@ -68,24 +81,32 @@ export default function PromoterLayout({
 
   return (
     <ThemeProvider>
-      <div className="overflow-y-auto overscroll-none min-h-screen bg-background flex">
-        <Sidebar />
-        <div className="flex-1 flex flex-col lg:pl-64">
-          {/* Top Bar Area */}
-          <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur">
-            <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+      <div className="min-h-screen bg-background flex relative max-w-full overflow-x-hidden">
+        <Sidebar 
+          isCollapsed={isSidebarCollapsed} 
+          toggleCollapse={toggleSidebarCollapse} 
+        />
+        <div className={cn(
+          "flex-1 flex flex-col transition-all duration-300 min-w-0 max-w-full overflow-hidden mt-16 lg:mt-0",
+          isSidebarCollapsed ? "lg:pl-20" : "lg:pl-64"
+        )}>
+          {/* Top Bar - Desktop Only */}
+          <header className="hidden lg:flex sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur items-center h-16 transition-all duration-300">
+            <div className="flex items-center justify-between px-6 w-full">
               <div className="flex items-center gap-4">
-                 <div className="lg:hidden w-10"></div> {/* Spacer for mobile menu button */}
-                 <h2 className="text-lg font-semibold hidden sm:block">Season</h2>
-                 <SeasonSwitcher />
+                 <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                    <h2 className="text-sm font-bold text-primary uppercase tracking-tight">Promoter Panel</h2>
+                    <span className="text-[10px] text-muted-foreground">|</span>
+                    <h2 className="text-xs font-semibold text-muted-foreground">Season View</h2>
+                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                {/* Additional header items could go here */}
+              <div className="flex items-center gap-2">
+                <SeasonSwitcher />
               </div>
             </div>
           </header>
 
-          <main className="flex-1 p-4 sm:p-6 pb-20 lg:pb-6">{children}</main>
+          <main className="flex-1 p-3 sm:p-6 pb-24 lg:pb-6 min-w-0 max-w-full">{children}</main>
         </div>
         <MobileNav />
       </div>

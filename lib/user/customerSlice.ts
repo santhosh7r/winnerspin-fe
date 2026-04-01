@@ -184,7 +184,7 @@ const customerSlice = createSlice({
       })
       .addCase(createCustomer.rejected, (state, action) => {
         state.isLoading = false
-        state.error = action.error.message || "Failed to create customer"
+        state.error = (action.payload as string) || action.error.message || "Failed to create customer"
       })
       .addCase(updateCustomerDetails.pending, (state) => {
         state.isLoading = true

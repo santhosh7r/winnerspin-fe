@@ -8,6 +8,7 @@ export interface Promoter {
   email: string
   mobNo: string
   isActive?: boolean
+  isActiveInSeason?: boolean // Add this field
   createdAt?: string
   parentPromoter?: {
     _id: string

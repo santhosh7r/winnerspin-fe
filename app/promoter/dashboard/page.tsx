@@ -3,7 +3,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { differenceInMonths } from "date-fns"
 import Link from "next/link"
 
-import { NewPosterPopup } from "@/components/promoter/new-poster-popup"
 import { StatsCards } from "@/components/promoter/stats-cards"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { fetchMyNetwork } from "@/lib/promoter/networkSlice"
@@ -44,7 +43,6 @@ export default function PromoterDashboard() {
 
   return (
     <div className="space-y-6">
-      <NewPosterPopup audience="promoter" />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

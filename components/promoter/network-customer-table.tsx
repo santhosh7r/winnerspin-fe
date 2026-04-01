@@ -111,36 +111,38 @@ export function NetworkCustomerTable() {
             <p className="text-muted-foreground">No network customers found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full no-scrollbar">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Username</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Mobile</TableHead>
-                  <TableHead>Card No</TableHead>
-                  <TableHead>Created By (promoter)</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Joined Date</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className="whitespace-nowrap">Username</TableHead>
+                  <TableHead className="whitespace-nowrap">Email</TableHead>
+                  <TableHead className="whitespace-nowrap">Mobile</TableHead>
+                  <TableHead className="whitespace-nowrap">Card No</TableHead>
+                  <TableHead className="whitespace-nowrap">Created By</TableHead>
+                  <TableHead className="whitespace-nowrap">Status</TableHead>
+                  <TableHead className="whitespace-nowrap">Joined Date</TableHead>
+                  <TableHead className="whitespace-nowrap text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredCustomers.map((customer) => (
                   <TableRow key={customer._id}>
-                    <TableCell className="font-medium">{customer.username}</TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>{customer.mobile}</TableCell>
-                    <TableCell>{customer.cardNo || "-"}</TableCell>
-                    <TableCell>{customer.promoter?.username || "Unknown"}</TableCell>
-                    <TableCell>
-                      <span className={`px-2 py-1 rounded text-xs ${customer.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    <TableCell className="font-medium whitespace-nowrap">
+                        {customer.username}
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.email}</TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.mobile}</TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.cardNo || "-"}</TableCell>
+                    <TableCell className="whitespace-nowrap">{customer.promoter?.username || "Unknown"}</TableCell>
+                    <TableCell className="whitespace-nowrap">
+                      <span className={`px-2 py-1 rounded text-[10px] sm:text-xs ${customer.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                         {customer.status}
                       </span>
                     </TableCell>
-                    <TableCell>{format(new Date(customer.createdAt), "dd/MM/yyyy")}</TableCell>
-                    <TableCell className="flex gap-2">
-                       <Button asChild variant="outline" size="sm" className="gap-2 bg-transparent">
+                    <TableCell className="whitespace-nowrap">{format(new Date(customer.createdAt), "dd/MM/yyyy")}</TableCell>
+                    <TableCell className="text-right whitespace-nowrap">
+                       <Button asChild variant="outline" size="sm" className="gap-2 bg-transparent h-8">
                         <Link href={`/promoter/customers/${customer._id}`}>
                             <Eye className="h-3 w-3" />
                             View
