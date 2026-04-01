@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, CreditCard, User, Network, UserPlus, TrendingUp, Banknote, Image as ImageIcon, ArrowDownToLine } from "lucide-react"
+import { LayoutDashboard, Users, CreditCard, User, Network, UserPlus, TrendingUp, Banknote, ArrowDownToLine } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navigation = [

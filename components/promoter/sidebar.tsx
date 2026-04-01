@@ -1,7 +1,7 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { usePathname } from "next/navigation"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import Link from "next/link"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
@@ -19,12 +19,11 @@ import {
   ChevronLeft, 
   ChevronRight,
   Menu,
-  X
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { logout } from "@/lib/promoter/authSlice"
-import type { AppDispatch, RootState } from "@/lib/store"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import type { AppDispatch } from "@/lib/store"
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -61,7 +60,6 @@ export function Sidebar({
   
   const pathname = usePathname()
   const dispatch = useDispatch<AppDispatch>()
-  const { user } = useSelector((state: RootState) => state.auth)
 
   const handleLogout = () => {
     dispatch(logout())

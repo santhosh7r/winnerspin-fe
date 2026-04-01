@@ -1,9 +1,9 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { fetchMyNetwork } from "@/lib/promoter/networkSlice"
+import { fetchMyNetwork, type Promoter, type Customer } from "@/lib/promoter/networkSlice"
 import { AppDispatch, RootState } from "@/lib/store"
 import { Eye, Network, UserPlus, Users } from "lucide-react"
 import Link from "next/link"
@@ -106,7 +106,7 @@ export default function MyNetworkPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(promoterTab === "self-made" ? data?.selfMadePromoters : data?.networkPromoters)?.map((promoter: any) => (
+                    {(promoterTab === "self-made" ? data?.selfMadePromoters : data?.networkPromoters)?.map((promoter: Promoter) => (
                       <TableRow key={promoter._id} className={promoter.isActive === false ? "opacity-60" : ""}>
                         <TableCell className="font-medium whitespace-nowrap">{promoter.userid}</TableCell>
                         <TableCell className="whitespace-nowrap">{promoter.username}</TableCell>
@@ -169,7 +169,7 @@ export default function MyNetworkPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {(customerTab === "self-made" ? data?.selfMadeCustomers : data?.networkCustomers)?.map((customer: any) => (
+                    {(customerTab === "self-made" ? data?.selfMadeCustomers : data?.networkCustomers)?.map((customer: Customer) => (
                       <TableRow key={customer._id}>
                         <TableCell className="font-medium whitespace-nowrap">{customer.cardNo || "-"}</TableCell>
                         <TableCell className="whitespace-nowrap">{customer.username}</TableCell>
